@@ -279,7 +279,7 @@ server:
 
 models:
   yolo:
-    path: "models/yolov8/best.pt"
+    path: "models/yolo11/train/weights/best.pt"
     confidence: 0.5
   cnn:
     path: "models/cnn/classifier.h5"
@@ -290,7 +290,7 @@ models:
 ```yaml
 training:
   epochs: 100
-  batch_size: 16
+  batch_size: 8
   img_size: 640
   device: "cuda"
 ```
