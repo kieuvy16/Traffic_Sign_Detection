@@ -40,7 +40,8 @@ data/raw/
 data/processed/
 models/
 !models/.gitkeep
-!models/yolov8/yolov8n.pt  # Include YOLO model file
+!models/yolo11/
+!models/yolo11/*.pt  # Include YOLO model file
 
 # Requirements files (include these)
 !requirements.txt
