@@ -16,11 +16,11 @@ classes:
     13: yield
     14: priority_road
 model:
-  name: yolov8n
+  name: yolo11n
   pretrained: true
 paths:
   dataset: data/processed
-  output: models/yolov8
+  output: models/yolo11
   test: data/processed/test
   train: data/processed/train
   val: data/processed/val
@@ -38,7 +38,7 @@ training:
     shear: 0.0
     translate: 0.1
   batch_size: 2
-  device: cuda
+  device: cpu
   epochs: 100
   img_size: 416
   optimizer:
@@ -47,4 +47,4 @@ training:
     name: SGD
     weight_decay: 0.0005
   patience: 50
-  workers: 0  # Set to 0 for Windows compatibility
+  workers: 8
