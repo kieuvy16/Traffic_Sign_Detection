@@ -14,7 +14,7 @@ models:
   yolo:
     confidence: 0.5
     iou_threshold: 0.45
-    path: models/yolov8/best.pt
+    path: models/yolo11/train/weights/best.pt
 processing:
   allowed_extensions:
   - .jpg
