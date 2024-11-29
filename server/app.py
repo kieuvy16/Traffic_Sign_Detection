@@ -27,7 +27,7 @@ with open("config/server_config.yaml", 'r') as f:
 # Initialize FastAPI app
 app = FastAPI(
     title="Traffic Sign Detection API",
-    description="API for detecting and classifying traffic signs using YOLOv8 and CNN",
+    description="API for detecting and classifying traffic signs using YOLO11 and CNN",
     version="1.0.0"
 )
 
