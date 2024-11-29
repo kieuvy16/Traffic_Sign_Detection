@@ -30,7 +30,7 @@ def load_config(config_path="config/server_config.yaml"):
         
         config.setdefault('models', {})
         config['models'].setdefault('yolo', {})
-        config['models']['yolo'].setdefault('path', 'models/yolov8/best.pt')
+        config['models']['yolo'].setdefault('path', 'models/yolo11/train/weights/best.pt')
         config['models']['yolo'].setdefault('confidence', 0.5)
         config['models']['yolo'].setdefault('iou_threshold', 0.45)
         
@@ -163,7 +163,7 @@ def create_default_config(config_path="config/server_config.yaml"):
         },
         'models': {
             'yolo': {
-                'path': 'models/yolov8/best.pt',
+                'path': 'models/yolo11/train/weights/best.pt',
                 'confidence': 0.5,
                 'iou_threshold': 0.45
             },
