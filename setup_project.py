@@ -13,7 +13,7 @@ def create_project_structure():
     directories = [
         'data/raw/archive',
         'data/processed',
-        'models/yolov8',
+        'models/yolo11',
         'models/cnn',
         'logs',
         'results/images',
@@ -32,7 +32,7 @@ def create_project_structure():
         print(f"Created directory: {directory}")
     
     # Create .gitkeep files in empty directories
-    for directory in ['models/yolov8', 'models/cnn', 'logs', 'results/images', 
+    for directory in ['models/yolo11', 'models/cnn', 'logs', 'results/images', 
                      'results/metrics', 'results/reports']:
         (Path(directory) / '.gitkeep').touch()
         print(f"Created .gitkeep in: {directory}")
@@ -80,7 +80,7 @@ def create_minimal_configs():
         },
         'models': {
             'yolo': {
-                'path': 'models/yolov8/best.pt',
+                'path': 'models/yolo11/train/weights/best.pt',
                 'confidence': 0.5,
                 'iou_threshold': 0.45
             },
@@ -108,7 +108,7 @@ def create_minimal_configs():
     # YOLO config
     yolo_config = {
         'model': {
-            'name': 'yolov8n',
+            'name': 'yolo11n.pt',
             'pretrained': True
         },
         'training': {
@@ -143,7 +143,7 @@ def create_minimal_configs():
             'train': 'data/processed/train',
             'val': 'data/processed/val',
             'test': 'data/processed/test',
-            'output': 'models/yolov8'
+            'output': 'models/yolo11'
         },
         'classes': {
             'names': {
