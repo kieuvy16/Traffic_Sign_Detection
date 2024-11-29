@@ -11,7 +11,7 @@ setup(
     version="1.0.0",
     author="Your Name",
     author_email="your.email@example.com",
-    description="Traffic Sign Detection System using YOLOv8 and CNN",
+    description="Traffic Sign Detection System using YOLO11 and CNN",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/yourusername/traffic-sign-detection",
