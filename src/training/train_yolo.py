@@ -9,7 +9,7 @@ class YOLOTrainer:
             self.config = yaml.safe_load(f)
     
     def train(self):
-        """Train YOLOv8 model"""
+        """Train YOLOv11 model"""
         # Load model
         model_name = self.config['model']['name']
         model = YOLO(f"{model_name}.pt" if self.config['model']['pretrained'] else model_name)
@@ -70,7 +70,7 @@ def main():
     """Main entry point for YOLO training"""
     import argparse
     
-    parser = argparse.ArgumentParser(description='Train YOLOv8 model for traffic sign detection')
+    parser = argparse.ArgumentParser(description='Train YOLO11 model for traffic sign detection')
     parser.add_argument('--config', '-c', default='config/yolo_config.yaml',
                        help='Path to YOLO configuration file')
     parser.add_argument('--eval', '-e', action='store_true',
@@ -82,7 +82,7 @@ def main():
     
     try:
         trainer = YOLOTrainer(args.config)
-        print("Starting YOLOv8 training...")
+        print("Starting YOLO11 training...")
         
         # Train model
         results = trainer.train()
@@ -90,7 +90,7 @@ def main():
         
         # Evaluate if requested
         if args.eval:
-            model_path = args.model_path or trainer.config['paths']['output'] + '/train/weights/best.pt'
+            model_path = args.model_path or trainer.config['paths']['output'] + 'models/yolo11/train/weights/best.pt'
             print(f"Evaluating model: {model_path}")
             metrics = trainer.evaluate(model_path)
             print("Evaluation completed!")
