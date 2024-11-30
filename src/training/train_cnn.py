@@ -33,16 +33,20 @@ class CNNTrainer:
         
         train_generator = train_datagen.flow_from_directory(
             train_dir,
-            target_size=(img_size, img_size),
-            batch_size=batch_size,
-            class_mode='categorical'
+            target_size=(224, 224),
+            batch_size=32,
+            # class_mode='categorical'
+            class_mode='sparse',
+            shuffle=True
         )
         
         val_generator = val_datagen.flow_from_directory(
             val_dir,
-            target_size=(img_size, img_size),
-            batch_size=batch_size,
-            class_mode='categorical'
+            target_size=(128, 128),
+            batch_size=32,
+            # class_mode='categorical' 
+            class_mode='sparse',
+            shuffle=False
         )
         
         return train_generator, val_generator
