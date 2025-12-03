@@ -38,7 +38,7 @@ training:
     shear: 0.0
     translate: 0.1
   batch_size: 2
-  device: cpu
+  device: cuda
   epochs: 100
   img_size: 416
   optimizer:
