@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Sign Detection System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: #f8f9ff;
+        }
+        
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f0f2ff;
+        }
+        
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: #e8ebff;
+            transform: scale(1.02);
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .upload-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #preview {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        #previewImage {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        #results {
+            margin-top: 30px;
+        }
+        
+        .detection-item {
+            background: #f8f9ff;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .detection-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .confidence {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        
+        .bbox {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 150px;
+            margin: 10px;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚦 Hệ Thống Nhận Diện Biển Báo Giao Thông</h1>
+        <p class="subtitle">Sử dụng YOLOv8 và CNN để phát hiện và phân loại biển báo</p>
+        
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📸</div>
+            <h2>Kéo thả ảnh vào đây hoặc click để chọn file</h2>
+            <p style="color: #666; margin-top: 10px;">Hỗ trợ: JPG, PNG (tối đa 5MB)</p>
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
+        
+        <div style="text-align: center;">
+            <button class="btn" id="uploadBtn" disabled>📤 Tải lên và Phân tích</button>
+            <button class="btn" id="clearBtn" style="background: #e74c3c;">🗑️ Xóa</button>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: #666;">Đang phân tích ảnh...</p>
+        </div>
+        
+        <div id="preview"></div>
+        
+        <div id="stats" style="display: none;" class="stats">
+            <div class="stat-box">
+                <div class="stat-number" id="totalDetections">0</div>
+                <div class="stat-label">Biển báo phát hiện</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="avgConfidence">0%</div>
+                <div class="stat-label">Độ tin cậy trung bình</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="processingTime">0ms</div>
+                <div class="stat-label">Thời gian xử lý</div>
+            </div>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+    
+    <script>
+        let selectedFile = null;
+        
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const preview = document.getElementById('preview');
+        const results = document.getElementById('results');
+        const loading = document.getElementById('loading');
+        const stats = document.getElementById('stats');
+        
+        // Click to upload
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        // File selected
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
+        
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleFile(file);
+            }
+        });
+        
+        function handleFile(file) {
+            selectedFile = file;
+            
+            // Preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.innerHTML = `<img id="previewImage" src="${e.target.result}" alt="Preview">`;
+            };
+            reader.readAsDataURL(file);
+            
+            uploadBtn.disabled = false;
+            results.innerHTML = '';
+            stats.style.display = 'none';
+        }
+        
+        // Upload and analyze
+        uploadBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            
+            loading.style.display = 'block';
+            results.innerHTML = '';
+            stats.style.display = 'none';
+            uploadBtn.disabled = true;
+            
+            const startTime = performance.now();
+            
+            try {
+                const response = await fetch('/api/detect', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                const endTime = performance.now();
+                const processingTime = Math.round(endTime - startTime);
+                
+                if (data.success) {
+                    displayResults(data, processingTime);
+                } else {
+                    results.innerHTML = '<div class="detection-item" style="border-left-color: #e74c3c;"><h3>Lỗi</h3><p>Không thể xử lý ảnh</p></div>';
+                }
+            } catch (error) {
+                results.innerHTML = `<div class="detection-item" style="border-left-color: #e74c3c;"><h3>Lỗi</h3><p>${error.message}</p></div>`;
+            } finally {
+                loading.style.display = 'none';
+                uploadBtn.disabled = false;
+            }
+        });
+        
+        function displayResults(data, processingTime) {
+            const { num_detections, detections } = data;
+            
+            if (num_detections === 0) {
+                results.innerHTML = '<div class="detection-item"><h3>Không tìm thấy biển báo nào</h3></div>';
+                return;
+            }
+            
+            // Calculate stats
+            const avgConf = detections.reduce((sum, d) => sum + d.confidence, 0) / num_detections;
+            
+            // Display stats
+            stats.style.display = 'flex';
+            document.getElementById('totalDetections').textContent = num_detections;
+            document.getElementById('avgConfidence').textContent = (avgConf * 100).toFixed(1) + '%';
+            document.getElementById('processingTime').textContent = processingTime + 'ms';
+            
+            // Display detections
+            let html = '<h2 style="margin-bottom: 20px;">📋 Kết quả phát hiện:</h2>';
+            
+            detections.forEach((det, idx) => {
+                const [x1, y1, x2, y2] = det.bbox;
+                const conf = (det.confidence * 100).toFixed(1);
+                
+                html += `
+                    <div class="detection-item">
+                        <h3>Biển báo ${idx + 1}: ${det.class_name}</h3>
+                        <span class="confidence">Độ tin cậy: ${conf}%</span>
+                        <span class="bbox">Vị trí: [${x1}, ${y1}, ${x2}, ${y2}]</span>
+                        ${det.cnn_prediction ? `
+                            <div style="margin-top: 10px; color: #666;">
+                                <strong>CNN xác nhận:</strong> Class ${det.cnn_prediction.class_id} 
+                                (${(det.cnn_prediction.confidence * 100).toFixed(1)}%)
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            results.innerHTML = html;
+        }
+        
+        // Clear
+        clearBtn.addEventListener('click', () => {
+            selectedFile = null;
+            preview.innerHTML = '';
+            results.innerHTML = '';
+            stats.style.display = 'none';
+            fileInput.value = '';
+            uploadBtn.disabled = true;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Dataset and models (exclude large files)
+data/raw/
+data/processed/
+models/
+!models/.gitkeep
+
+# Training artifacts
+logs/
+results/
+notebooks/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Jupyter
+.ipynb_checkpoints
+
+# PyTest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Large files
+*.pt
+*.pth
+*.h5
+*.weights
+*.onnx
+*.tflite
+
+# Temporary files
+*.tmp
+*.temp
+
+# Logs
+*.log
+
+# MacOS
+.AppleDouble
+.LSOverride
+
+# Windows
+[Tt]humbs.db
+
+# Backup files
+*.bak
+*.backup
+
+# Compression
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Media files
+*.avi
+*.flv
+*.m4v
+*.mkv
+*.mov
+*.mp4
+*.mpeg
+*.mpg
+*.wmv
+*.webm
+
+# Large dataset files (specific to your project)
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tiff
+*.txt
+
+# But keep small config files and example structures
+!data/raw/example_structure.md
+!data/processed/data.yaml
+!config/
+!*.yaml
+!*.yml
