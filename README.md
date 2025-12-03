@@ -137,9 +137,8 @@ data/raw/
 ### Tải dataset
 
 1. Tải dataset từ các nguồn công khai:
-   - [German Traffic Sign Detection Benchmark](https://benchmark.ini.rub.de/gtsdb_dataset.html)
-   - [TT100K Dataset](https://cg.cs.tsinghua.edu.cn/traffic-sign/)
-   - [BelgiumTS Dataset](http://btsd.ethz.ch/shareddata/)
+   - [Vietnam Traffic Signs](https://www.kaggle.com/datasets/maitam/vietnamese-traffic-signs)
+   - [Roboflow Dataset](https://universe.roboflow.com/truong-a6rzc/bien-bao-giao-thong-viet-nam-zalo1/dataset/5)
 
 2. Đặt dataset vào thư mục `data/raw/archive/` với cấu trúc:
    ```
