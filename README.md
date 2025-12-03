@@ -73,7 +73,7 @@ traffic-sign-detection/
 
 1. Clone repository:
 ```bash
-git clone https://github.com/yourusername/traffic-sign-detection.git
+git clone https://github.com/Joycee23/Traffic_Sign_Detection.git
 cd traffic-sign-detection
 ```
 
@@ -87,6 +87,7 @@ venv\Scripts\activate     # Windows
 3. Cài đặt dependencies:
 ```bash
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 4. Cài đặt package:
@@ -338,7 +339,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Authors
 
-- Your Name - Initial work
+- Jerry Nguyễn - Initial work
 
 ## 🙏 Acknowledgments
 
@@ -349,9 +350,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📞 Contact
 
-- Email: your.email@example.com
-- Project Link: https://github.com/yourusername/traffic-sign-detection
-
+- Email: tuannguyen211982@gmail.com
+- Project Link: https://github.com/Joycee23/Traffic_Sign_Detection
 ## 🔄 Updates
 
 ### Version 1.0.0
