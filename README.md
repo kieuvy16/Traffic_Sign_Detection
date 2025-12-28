@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚦 Hệ Thống Nhận Diện Biển Báo Giao Thông
 
 Hệ thống nhận diện và phân loại biển báo giao thông sử dụng YOLOv8 cho object detection và CNN cho classification.
@@ -378,3 +379,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [YOLOv8 Documentation](https://docs.ultralytics.com/)
 - [TensorFlow Documentation](https://www.tensorflow.org/)
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
+=======
+# Traffic_Sign_Detection
+ 8a1d2e40b782ed1556d730ac04207d48c659bc2f
