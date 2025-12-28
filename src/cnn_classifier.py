@@ -1,4 +1,3 @@
-
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -6,23 +5,24 @@ import numpy as np
 import cv2
 
 class CNNClassifier:
-    def __init__(self, num_classes, input_shape=(224, 224, 3)):
+    def __init__(self, num_classes, input_shape=(224, 224, 3), use_sparse_labels=True):
         """Khởi tạo CNN classifier"""
         self.num_classes = num_classes
         self.input_shape = input_shape
         self.model = None
+        self.use_sparse_labels = use_sparse_labels  # True nếu nhãn là số nguyên (0..C-1), False nếu one-hot
     
     def build_model(self):
         """Xây dựng mô hình CNN"""
         model = keras.Sequential([
             # Block 1
-            layers.Conv2D(32, (3, 3), activation='relu', input_shape=self.input_shape),
+            layers.Conv2D(16, (3, 3), activation='relu', input_shape=self.input_shape),
             layers.BatchNormalization(),
             layers.MaxPooling2D((2, 2)),
             layers.Dropout(0.25),
             
             # Block 2
-            layers.Conv2D(64, (3, 3), activation='relu'),
+            layers.Conv2D(16, (3, 3), activation='relu'),
             layers.BatchNormalization(),
             layers.MaxPooling2D((2, 2)),
             layers.Dropout(0.25),
@@ -34,27 +34,31 @@ class CNNClassifier:
             layers.Dropout(0.25),
             
             # Block 4
-            layers.Conv2D(256, (3, 3), activation='relu'),
+            layers.Conv2D(128, (3, 3), activation='relu'),
             layers.BatchNormalization(),
             layers.MaxPooling2D((2, 2)),
             layers.Dropout(0.25),
             
             # Dense layers
             layers.Flatten(),
-            layers.Dense(512, activation='relu'),
-            layers.BatchNormalization(),
-            layers.Dropout(0.5),
-            
             layers.Dense(256, activation='relu'),
             layers.BatchNormalization(),
             layers.Dropout(0.5),
             
+            layers.Dense(128, activation='relu'),
+            layers.BatchNormalization(),
+            layers.Dropout(0.5),
+            
+            # Output layer
             layers.Dense(self.num_classes, activation='softmax')
         ])
         
+        # Chọn loss phù hợp
+        loss_fn = 'sparse_categorical_crossentropy' if self.use_sparse_labels else 'categorical_crossentropy'
+        
         model.compile(
             optimizer=keras.optimizers.Adam(learning_rate=0.001),
-            loss='categorical_crossentropy',
+            loss=loss_fn,
             metrics=['accuracy', 'top_k_categorical_accuracy']
         )
         
@@ -108,6 +112,7 @@ class CNNClassifier:
         print(f"Model loaded from {path}")
 
 if __name__ == "__main__":
-    classifier = CNNClassifier(num_classes=15)
+    # Ví dụ: nếu dataset có 2 lớp và nhãn là số nguyên (0 hoặc 1)
+    classifier = CNNClassifier(num_classes=2, use_sparse_labels=True)
     model = classifier.build_model()
     model.summary()
